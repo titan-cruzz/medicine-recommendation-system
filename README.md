@@ -35,10 +35,10 @@ medicine_recommendation_system/
 ## ⚙️ Setup Instructions
 
 ### 1. Clone the repository
-
+'''bash
 git clone https://github.com/titan-cruzz/medicine_recommendation_system.git
 cd medicine_recommendation_system
-
+'''
 ### 2. Install Dependencies
 pip install -r requirements.txt
 
