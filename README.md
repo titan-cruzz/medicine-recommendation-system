@@ -35,7 +35,7 @@ medicine_recommendation_system/
 ## ⚙️ Setup Instructions
 
 ### 1. Clone the repository
-```bash
+
 git clone https://github.com/titan-cruzz/medicine_recommendation_system.git
 cd medicine_recommendation_system
 
@@ -50,5 +50,5 @@ python evaluate_model.py
 
 ### 5. Run the web application
 python app.py
-
+```bash
 
