@@ -41,12 +41,9 @@ medicine_recommendation_system/
 '''bash
 git clone https://github.com/titan-cruzz/medicine_recommendation_system.git
 cd medicine_recommendation_system
-<<<<<<< HEAD
 '''
-=======
 ```
 
->>>>>>> 4e331e2 (Update README with setup instructions and project details)
 ### 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
@@ -65,13 +62,10 @@ python evaluate_model.py
 ### 5. Run the Web Application
 ```bash
 python app.py
-<<<<<<< HEAD
 ```bash
-=======
 ```
 
 ---
->>>>>>> 4e331e2 (Update README with setup instructions and project details)
 
 ## 📈 Usage
 1. Open the web application in your browser (`http://127.0.0.1:5000`)  
