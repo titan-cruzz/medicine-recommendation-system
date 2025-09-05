@@ -118,7 +118,10 @@
             document.getElementById("result").innerHTML = `
                 <div class="alert alert-info">
                     <strong>Predicted Disease:</strong> ${result.disease}<br>
-                    <strong>Confidence:</strong> ${result.confidence}%
+                    <strong>Confidence:</strong> ${result.confidence}%<br>
+                    <strong>Medications:</strong> ${Array.isArray(result.medications) && result.medications.length > 0 
+                        ? result.medications.join(", ") 
+                        : "NA"}
                 </div>
             `;
         }

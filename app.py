@@ -11,6 +11,7 @@ le = joblib.load("models/label_encoder.pkl")
 
 # Load dataset to get symptom names
 df = pd.read_csv("diseases-and-symptoms-dataset/Diseases_and_Symptoms.csv")
+med_df = pd.read_csv("medications_dataset/disease_medications_dataset.csv")
 symptoms = list(df.columns[1:])  # ensure it's a list
 
 app = Flask(__name__)
@@ -30,7 +31,7 @@ def predict():
     data = request.json or {}
     selected_symptoms = data.get("symptoms", [])
 
-    # Create binary input vector
+    # ---- Create binary input vector ----
     input_vector = np.zeros(len(symptoms))
     for s in selected_symptoms:
         if s in symptoms:
@@ -38,18 +39,38 @@ def predict():
         else:
             # Fuzzy match fallback (only if similarity is high enough)
             match, score, _ = process.extractOne(s, symptoms)
-            if score > 80:  # threshold to avoid random matches
+            if score > 80:
                 input_vector[symptoms.index(match)] = 1
 
     input_vector = input_vector.reshape(1, -1)
+
+    # ---- Predict disease ----
     pred_prob = model.predict(input_vector)
     pred_class = np.argmax(pred_prob)
     disease = le.inverse_transform([pred_class])[0]
     confidence = float(np.max(pred_prob)) * 100
 
+    # ---- Normalize once ----
+    disease_clean = disease.strip().lower()
+    med_df.columns = med_df.columns.str.strip().str.lower()
+    med_df["diseases"] = med_df["diseases"].astype(str).str.strip().str.lower()
+
+    # ---- Lookup medications ----
+    meds_row = med_df.loc[med_df["diseases"] == disease_clean, "preferred medications"]
+
+    if not meds_row.empty:
+        medications = [m.strip() for m in meds_row.iloc[0].split(",")]
+    else:
+        medications = ["NA"]
+
+    # ---- Debug print (check logs) ----
+    print(f"Predicted: {disease_clean}, Found medications: {medications}")
+
+    # ---- Return response ----
     return jsonify({
         "disease": disease,
-        "confidence": round(confidence, 2)
+        "confidence": round(confidence, 2),
+        "medications": medications
     })
 
 # ---- Home page ----
